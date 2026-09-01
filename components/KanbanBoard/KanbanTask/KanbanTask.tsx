@@ -1,19 +1,30 @@
 import { StatusCode } from "@/types/statusCodes";
-import { useDraggable } from "@dnd-kit/react";
+import { useSortable } from "@dnd-kit/react/sortable";
 
 type KanbanTaskProps = {
   title: string;
   id: number;
   status: StatusCode;
+  column: string;
+  index: number;
 };
 
-export default function KanbanTask({ title, id, status }: KanbanTaskProps) {
-  const { ref } = useDraggable({
-    id: id,
+export default function KanbanTask({
+  title,
+  id,
+  status,
+  column,
+  index,
+}: KanbanTaskProps) {
+  const { ref, isDragging } = useSortable({
+    id,
+    index,
+    type: "task",
+    accept: "task",
+    group: column,
   });
-
   return (
-    <div ref={ref} id={id.toString()}>
+    <div className="task" ref={ref} data-dragging={isDragging}>
       <h3>{title}</h3>
     </div>
   );

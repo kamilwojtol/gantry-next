@@ -1,4 +1,5 @@
 import { useDroppable } from "@dnd-kit/react";
+import { CollisionPriority } from "@dnd-kit/abstract";
 
 type KanbanSectionProps = {
   title: string;
@@ -12,7 +13,10 @@ export default function KanbanSection({
   children,
 }: KanbanSectionProps) {
   const { ref } = useDroppable({
-    id: id,
+    id,
+    type: "column",
+    accept: "task",
+    collisionPriority: CollisionPriority.Low,
   });
 
   return (
