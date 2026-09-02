@@ -16,6 +16,9 @@ export default function KanbanSection({
     id,
     type: "column",
     accept: "task",
+    data: {
+      column: id,
+    },
     collisionPriority: CollisionPriority.Low,
   });
 

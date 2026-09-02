@@ -21,6 +21,9 @@ export default function KanbanTask({
     index,
     type: "task",
     accept: "task",
+    data: {
+      column,
+    },
     group: column,
   });
   return (

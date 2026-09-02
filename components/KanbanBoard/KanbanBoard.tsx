@@ -85,9 +85,24 @@ export default function KanbanBoard() {
         setTasks((tasks) => move(tasks, event));
       }}
       onDragEnd={(event) => {
+        if (event.canceled) return;
+
+        const sourceTaskId = event.operation.source?.id;
+        const targetColumn = event.operation.target?.data?.column as
+          | keyof TasksContainer
+          | undefined;
+
+        if (typeof sourceTaskId !== "number" || !targetColumn) return;
+
+        const statusByColumn: Record<keyof TasksContainer, StatusCode> = {
+          todoTasks: StatusCode.TO_DO,
+          progressTasks: StatusCode.IN_PROGRESS,
+          doneTasks: StatusCode.DONE,
+        };
+
         mutation.mutate({
-          taskId: Number(event.operation.source?.id),
-          newStatusCode: Number(event.operation.target?.id),
+          taskId: sourceTaskId,
+          newStatusCode: statusByColumn[targetColumn],
         });
       }}
     >
