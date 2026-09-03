@@ -23,9 +23,11 @@ export default function KanbanSection({
   });
 
   return (
-    <div ref={ref} className="border border-black">
-      <h2>{title}</h2>
-      {children}
+    <div ref={ref} className="mr-4 min-w-[250px]">
+      <h2 className="text-xl px-2">{title}</h2>
+      <div className="bg-slate-200 w-full rounded-xl px-2 py-2 min-h-[500px]">
+        {children}
+      </div>
     </div>
   );
 }

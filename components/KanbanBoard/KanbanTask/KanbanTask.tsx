@@ -27,7 +27,11 @@ export default function KanbanTask({
     group: column,
   });
   return (
-    <div className="task" ref={ref} data-dragging={isDragging}>
+    <div
+      className="flex bg-gray-50 rounded-xl px-3 py-2 mb-2 cursor-pointer"
+      ref={ref}
+      data-dragging={isDragging}
+    >
       <h3>{title}</h3>
     </div>
   );

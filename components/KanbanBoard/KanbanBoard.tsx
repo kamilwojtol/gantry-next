@@ -106,7 +106,7 @@ export default function KanbanBoard() {
         });
       }}
     >
-      <div className="flex border border-black w-full">
+      <div className="flex justify-center border-radius-5 w-full m-2">
         {boardColumns.map(([column, columnTasks]) => (
           <KanbanSection key={column} id={column} title={column}>
             {columnTasks.map((task, index) => (
