@@ -30,13 +30,13 @@ export default function KanbanBoard() {
   const { isPending, error, data } = useQuery<Kanban>({
     queryKey: ["kanbanBoard"],
     queryFn: () =>
-      fetch("http://localhost:5142/api/kanban/1").then((res) => res.json()),
+      fetch("http://localhost:5142/api/kanban/6").then((res) => res.json()),
   });
 
   const mutation = useMutation({
     mutationFn: ({ taskId, newStatusCode }: ChangeTaskStatusParams) => {
       return fetch(
-        `http://localhost:5142/api/kanban/1/changeTaskStatus/${taskId}?statusCode=${newStatusCode}`,
+        `http://localhost:5142/api/kanban/6/changeTaskStatus/${taskId}?statusCode=${newStatusCode}`,
         {
           method: "PATCH",
         },
