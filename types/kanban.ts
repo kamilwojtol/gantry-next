@@ -1,10 +1,16 @@
 import Task from "./task";
 
-type Kanban = {
+export type Kanban = {
   id: number;
   title: string;
-  tasks: Task[];
+  tasks: Task[] | [];
   tasksNumber: number;
+  description: string;
+};
+
+export type CreatedKanban = {
+  title: string;
+  description: string;
 };
 
 export default Kanban;

@@ -2,6 +2,8 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, Checkbox, TextField, Divider } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { CreatedKanban } from "@/types/kanban";
 
 type CreateKanbanProps = {
   title: string;
@@ -19,7 +21,28 @@ export default function CreateKanban({ title }: CreateKanbanProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => submitCreateKanban(data);
+
+  const createKanbanMutation = useMutation({
+    mutationFn: (kanban: CreatedKanban) => {
+      return fetch(`http://localhost:5142/api/kanban/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(kanban),
+      });
+    },
+  });
+
+  const submitCreateKanban = (data: Inputs) => {
+    const newKanban: CreatedKanban = {
+      title: data.kanbanName,
+      description: data.kanbanDescription,
+    };
+
+    createKanbanMutation.mutate(newKanban);
+  };
 
   return (
     <div>
