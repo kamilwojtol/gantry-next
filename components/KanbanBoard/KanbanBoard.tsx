@@ -9,6 +9,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import Kanban from "@/types/kanban";
 import { StatusCode } from "@/types/statusCodes";
 import Task from "@/types/task";
+import KanbanManage from "./KanbanManage/KanbanManage";
 
 type TasksContainer = {
   todoTasks: Task[];
@@ -81,48 +82,51 @@ export default function KanbanBoard() {
   ][];
 
   return (
-    <DragDropProvider
-      onDragOver={(event) => {
-        setTasks((tasks) => move(tasks, event));
-      }}
-      onDragEnd={(event) => {
-        if (event.canceled) return;
+    <div className="flex">
+      <KanbanManage />
+      <DragDropProvider
+        onDragOver={(event) => {
+          setTasks((tasks) => move(tasks, event));
+        }}
+        onDragEnd={(event) => {
+          if (event.canceled) return;
 
-        const sourceTaskId = event.operation.source?.id;
-        const targetColumn = event.operation.target?.data?.column as
-          | keyof TasksContainer
-          | undefined;
+          const sourceTaskId = event.operation.source?.id;
+          const targetColumn = event.operation.target?.data?.column as
+            | keyof TasksContainer
+            | undefined;
 
-        if (typeof sourceTaskId !== "number" || !targetColumn) return;
+          if (typeof sourceTaskId !== "number" || !targetColumn) return;
 
-        const statusByColumn: Record<keyof TasksContainer, StatusCode> = {
-          todoTasks: StatusCode.TO_DO,
-          progressTasks: StatusCode.IN_PROGRESS,
-          doneTasks: StatusCode.DONE,
-        };
+          const statusByColumn: Record<keyof TasksContainer, StatusCode> = {
+            todoTasks: StatusCode.TO_DO,
+            progressTasks: StatusCode.IN_PROGRESS,
+            doneTasks: StatusCode.DONE,
+          };
 
-        mutation.mutate({
-          taskId: sourceTaskId,
-          newStatusCode: statusByColumn[targetColumn],
-        });
-      }}
-    >
-      <div className="flex justify-center border-radius-5 w-full m-2">
-        {boardColumns.map(([column, columnTasks]) => (
-          <KanbanSection key={column} id={column} title={column}>
-            {columnTasks.map((task, index) => (
-              <KanbanTask
-                title={task.name}
-                id={task.id}
-                status={task.status}
-                key={task.id}
-                column={column}
-                index={index}
-              />
-            ))}
-          </KanbanSection>
-        ))}
-      </div>
-    </DragDropProvider>
+          mutation.mutate({
+            taskId: sourceTaskId,
+            newStatusCode: statusByColumn[targetColumn],
+          });
+        }}
+      >
+        <div className="flex justify-center border-radius-5 w-full m-2">
+          {boardColumns.map(([column, columnTasks]) => (
+            <KanbanSection key={column} id={column} title={column}>
+              {columnTasks.map((task, index) => (
+                <KanbanTask
+                  title={task.name}
+                  id={task.id}
+                  status={task.statusCode}
+                  key={task.id}
+                  column={column}
+                  index={index}
+                />
+              ))}
+            </KanbanSection>
+          ))}
+        </div>
+      </DragDropProvider>
+    </div>
   );
 }

@@ -1,0 +1,101 @@
+"use client";
+
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { Button, TextField, Divider } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Dayjs } from "dayjs";
+
+type CreateTaskProps = {
+  title: string;
+};
+
+type Inputs = {
+  taskName: string;
+  taskDescription: string;
+  deadline: Dayjs | null;
+};
+
+export default function CreateTask({ title }: CreateTaskProps) {
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  return (
+    <div>
+      <div className="pl-4 py-2">
+        <h2 className="text-xl font-medium">{title}</h2>
+      </div>
+      <Divider />
+      <div className="pl-4 pt-2">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {errors ? errors.form?.message : null}
+
+          <div className="flex items-center gap-2 my-2">
+            <label htmlFor="kanban-name" className="w-25">
+              Name:
+            </label>
+            <TextField
+              defaultValue="Task name"
+              {...register("taskName", {
+                required: "Task name is required",
+                minLength: {
+                  value: 5,
+                  message: "Name should be longer than 5 characters",
+                },
+              })}
+              id="kanban-name"
+              error={Boolean(errors.taskName)}
+              helperText={errors.taskName?.message ?? ""}
+              className="w-75"
+            />
+          </div>
+
+          <div className="flex items-center gap-2 my-2">
+            <label htmlFor="kanban-description" className="w-25">
+              Description:
+            </label>
+            <TextField
+              defaultValue="Description"
+              {...register("taskDescription")}
+              id="kanban-description"
+              error={Boolean(errors.taskDescription)}
+              className="w-75"
+            />
+          </div>
+
+          <div className="flex items-center gap-2 my-2">
+            <label htmlFor="kanban-privacy">Task deadline:</label>
+            <Controller
+              name="deadline"
+              control={control}
+              rules={{
+                required: "Deadline is required",
+              }}
+              render={({ field, fieldState }) => (
+                <DatePicker
+                  label="Deadline"
+                  value={field.value}
+                  onChange={(newValue) => field.onChange(newValue)}
+                  slotProps={{
+                    textField: {
+                      error: !!fieldState.error,
+                      helperText: fieldState.error?.message,
+                    },
+                  }}
+                />
+              )}
+            />
+          </div>
+
+          <Button type="submit" variant="contained">
+            Add Board
+          </Button>
+        </form>
+      </div>
+    </div>
+  );
+}
