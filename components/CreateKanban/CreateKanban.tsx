@@ -1,6 +1,7 @@
 "use client";
 
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Button, Checkbox, TextField, Divider } from "@mui/material";
 
 type CreateKanbanProps = {
   title: string;
@@ -22,48 +23,59 @@ export default function CreateKanban({ title }: CreateKanbanProps) {
 
   return (
     <div>
-      <div>
-        <h2>Add Kanban Board</h2>
+      <div className="pl-4 py-2">
+        <h2 className="text-xl font-medium">{title}</h2>
       </div>
-      <div>
-        <form action="POST" onSubmit={handleSubmit(onSubmit)}>
+      <Divider />
+      <div className="pl-4 pt-2">
+        <form onSubmit={handleSubmit(onSubmit)}>
           {errors ? errors.form?.message : null}
 
-          <label htmlFor="kanban-name" className="flex">
-            Enter kanban name:
-            <input
-              defaultValue="Enter kanban name"
+          <div className="flex items-center gap-2 my-2">
+            <label htmlFor="kanban-name" className="w-25">
+              Name:
+            </label>
+            <TextField
+              defaultValue="Kanban name"
               {...register("kanbanName", {
-                required: true,
-                minLength: 5,
+                required: "Kanban name is required",
+                minLength: {
+                  value: 5,
+                  message: "Name should be longer than 5 characters",
+                },
               })}
               id="kanban-name"
-              name="kanban-name"
+              error={Boolean(errors.kanbanName)}
+              helperText={errors.kanbanName?.message ?? ""}
+              className="w-75"
             />
-          </label>
+          </div>
 
-          <label htmlFor="kanban-description" className="flex">
-            Enter kanban name:
-            <input
-              defaultValue="Enter kanban description"
+          <div className="flex items-center gap-2 my-2">
+            <label htmlFor="kanban-description" className="w-25">
+              Description:
+            </label>
+            <TextField
+              defaultValue="Description"
               {...register("kanbanDescription")}
-              id="kanban-name"
-              name="kanban-name"
+              id="kanban-description"
+              error={Boolean(errors.kanbanDescription)}
+              className="w-75"
             />
-          </label>
+          </div>
 
-          <label htmlFor="kanban-privacy" className="flex">
-            Private kanban:
-            <input
-              defaultValue=""
+          <div className="flex items-center gap-2 my-2">
+            <label htmlFor="kanban-privacy">Private kanban:</label>
+            <Checkbox
+              defaultChecked={false}
               {...register("isPrivate")}
               id="kanban-privacy"
-              name="kanban-privacy"
-              type="select"
             />
-          </label>
+          </div>
 
-          <input type="submit" />
+          <Button type="submit" variant="contained">
+            Add Board
+          </Button>
         </form>
       </div>
     </div>

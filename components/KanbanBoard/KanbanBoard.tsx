@@ -54,7 +54,8 @@ export default function KanbanBoard() {
     };
 
     data.tasks.forEach((task) => {
-      switch (task.status) {
+      console.log(task);
+      switch (task.statusCode) {
         case StatusCode.TO_DO:
           groupedTasks.todoTasks.push(task);
           break;

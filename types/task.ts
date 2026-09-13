@@ -6,7 +6,7 @@ type Task = {
   createdData: Date;
   deadline: Date;
   description: string;
-  status: StatusCode;
+  statusCode: StatusCode;
   name: string;
 };
 
