@@ -1,9 +1,11 @@
-import CreateKanbanPage from "@/pages/CreateKanbanPage";
+"use client";
+
+import CreateKanbanPage from "@/components/CreateKanban/CreateKanban";
 
 export default function CreateKanban() {
   return (
     <div className="flex w-full">
-      <CreateKanbanPage />
+      <CreateKanbanPage title="Create Kanban" />
     </div>
   );
 }

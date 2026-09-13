@@ -1,9 +1,11 @@
-import CreateTaskPage from "@/pages/CreateTaskPage";
+"use client";
+
+import CreateTaskPage from "@/components/CreateTask/CreateTask";
 
 export default function CreateKanban() {
   return (
     <div className="flex w-full">
-      <CreateTaskPage />
+      <CreateTaskPage title="Create Task" />
     </div>
   );
 }
