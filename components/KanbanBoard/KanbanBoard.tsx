@@ -10,6 +10,8 @@ import Kanban from "@/types/kanban";
 import { StatusCode } from "@/types/statusCodes";
 import Task from "@/types/task";
 import KanbanManage from "./KanbanManage/KanbanManage";
+import { useKanban } from "@/store/useKanban";
+import { useRouter } from "next/navigation";
 
 type TasksContainer = {
   todoTasks: Task[];
@@ -23,6 +25,9 @@ type ChangeTaskStatusParams = {
 };
 
 export default function KanbanBoard() {
+  const getKanbanId = useKanban((state) => state.kanban?.id);
+  const router = useRouter();
+
   const [tasks, setTasks] = useState<TasksContainer>({
     todoTasks: [],
     progressTasks: [],
@@ -31,13 +36,15 @@ export default function KanbanBoard() {
   const { isPending, error, data } = useQuery<Kanban>({
     queryKey: ["kanbanBoard"],
     queryFn: () =>
-      fetch("http://localhost:5142/api/kanban/6").then((res) => res.json()),
+      fetch(`http://localhost:5142/api/kanban/${getKanbanId}`).then((res) =>
+        res.json(),
+      ),
   });
 
   const mutation = useMutation({
     mutationFn: ({ taskId, newStatusCode }: ChangeTaskStatusParams) => {
       return fetch(
-        `http://localhost:5142/api/kanban/6/changeTaskStatus/${taskId}?statusCode=${newStatusCode}`,
+        `http://localhost:5142/api/kanban/${getKanbanId}/changeTaskStatus/${taskId}?statusCode=${newStatusCode}`,
         {
           method: "PATCH",
         },
@@ -46,7 +53,9 @@ export default function KanbanBoard() {
   });
 
   useEffect(() => {
-    if (!data) return;
+    if (!data || !data.tasks) return;
+
+    if (!getKanbanId) router.push("/select-kanban");
 
     const groupedTasks: TasksContainer = {
       todoTasks: [],
