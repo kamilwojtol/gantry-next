@@ -25,7 +25,7 @@ type ChangeTaskStatusParams = {
 };
 
 export default function KanbanBoard() {
-  const getKanbanId = useKanban((state) => state.kanban?.id);
+  const getKanbanId = useKanban((state) => state.kanban?.id ?? 1);
   const router = useRouter();
 
   const [tasks, setTasks] = useState<TasksContainer>({
@@ -52,10 +52,10 @@ export default function KanbanBoard() {
     },
   });
 
+  if (!getKanbanId) router.push("/select-kanban");
+
   useEffect(() => {
     if (!data || !data.tasks) return;
-
-    if (!getKanbanId) router.push("/select-kanban");
 
     const groupedTasks: TasksContainer = {
       todoTasks: [],

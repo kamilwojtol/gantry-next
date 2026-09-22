@@ -92,7 +92,7 @@ export default function CreateTask({ title }: CreateTaskProps) {
           </div>
 
           <Button type="submit" variant="contained">
-            Add Board
+            Add Task
           </Button>
         </form>
       </div>

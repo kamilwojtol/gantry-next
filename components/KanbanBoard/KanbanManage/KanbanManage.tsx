@@ -12,6 +12,9 @@ export default function KanbanManage() {
         <Divider />
         <Button>Manage Kanban</Button>
         <Button>Kanban Archive</Button>
+        <Button>
+          <Link href="/select-kanban">Select Kanban</Link>
+        </Button>
         <Divider />
         <Button>Manage Users</Button>
         <Button>
