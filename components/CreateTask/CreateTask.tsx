@@ -5,8 +5,9 @@ import { Button, TextField, Divider } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Dayjs } from "dayjs";
 import { useMutation } from "@tanstack/react-query";
-import Task from "@/types/task";
+import { CreatedTask } from "@/types/task";
 import { useKanban } from "@/store/useKanban";
+import { StatusCode } from "@/types/statusCodes";
 
 type CreateTaskProps = {
   title: string;
@@ -16,7 +17,7 @@ type Inputs = {
   taskName: string;
   taskDescription: string;
   taskAuthor: string;
-  deadline: Dayjs | null;
+  deadline: Dayjs;
 };
 
 export default function CreateTask({ title }: CreateTaskProps) {
@@ -26,13 +27,12 @@ export default function CreateTask({ title }: CreateTaskProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) =>
-    createTaskMutation.mutate(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => submitCreateTask(data);
 
   const getKanbanId = useKanban((state) => state.kanban?.id ?? 1);
 
   const createTaskMutation = useMutation({
-    mutationFn: (task) => {
+    mutationFn: (task: CreatedTask) => {
       return fetch(
         `http://localhost:5142/api/kanban/${getKanbanId}/createTask`,
         {
@@ -45,6 +45,18 @@ export default function CreateTask({ title }: CreateTaskProps) {
       );
     },
   });
+
+  const submitCreateTask = (data: Inputs) => {
+    const newTask: CreatedTask = {
+      name: data.taskName,
+      author: data.taskAuthor,
+      deadline: data.deadline,
+      description: data.taskDescription,
+      statusCode: StatusCode.TO_DO,
+    };
+
+    createTaskMutation.mutate(newTask);
+  };
 
   return (
     <div>
