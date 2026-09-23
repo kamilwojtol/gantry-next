@@ -36,15 +36,15 @@ export default function KanbanBoard() {
   const { isPending, error, data } = useQuery<Kanban>({
     queryKey: ["kanbanBoard"],
     queryFn: () =>
-      fetch(`http://localhost:5142/api/kanban/${getKanbanId}`).then((res) =>
-        res.json(),
-      ),
+      fetch(
+        `https://gantry-btaedmegevfabtdp.westcentralus-01.azurewebsites.net/api/kanban/${getKanbanId}`,
+      ).then((res) => res.json()),
   });
 
   const mutation = useMutation({
     mutationFn: ({ taskId, newStatusCode }: ChangeTaskStatusParams) => {
       return fetch(
-        `http://localhost:5142/api/kanban/${getKanbanId}/changeTaskStatus/${taskId}?statusCode=${newStatusCode}`,
+        `https://gantry-btaedmegevfabtdp.westcentralus-01.azurewebsites.net/api/kanban/${getKanbanId}/changeTaskStatus/${taskId}?statusCode=${newStatusCode}`,
         {
           method: "PATCH",
         },

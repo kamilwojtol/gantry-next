@@ -25,13 +25,16 @@ export default function CreateKanban({ title }: CreateKanbanProps) {
 
   const createKanbanMutation = useMutation({
     mutationFn: (kanban: CreatedKanban) => {
-      return fetch(`http://localhost:5142/api/kanban/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      return fetch(
+        `https://gantry-btaedmegevfabtdp.westcentralus-01.azurewebsites.net/api/kanban/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(kanban),
         },
-        body: JSON.stringify(kanban),
-      });
+      );
     },
   });
 

@@ -34,7 +34,7 @@ export default function CreateTask({ title }: CreateTaskProps) {
   const createTaskMutation = useMutation({
     mutationFn: (task: CreatedTask) => {
       return fetch(
-        `http://localhost:5142/api/kanban/${getKanbanId}/createTask`,
+        `https://gantry-btaedmegevfabtdp.westcentralus-01.azurewebsites.net/kanban/${getKanbanId}/createTask`,
         {
           method: "POST",
           headers: {

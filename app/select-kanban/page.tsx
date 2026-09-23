@@ -8,7 +8,9 @@ export default function SelectKanban() {
   const { isPending, error, data } = useQuery<Kanban[]>({
     queryKey: ["kanbanBoard"],
     queryFn: () =>
-      fetch("http://localhost:5142/api/kanban/").then((res) => res.json()),
+      fetch(
+        "https://gantry-btaedmegevfabtdp.westcentralus-01.azurewebsites.net/api/kanban/",
+      ).then((res) => res.json()),
   });
 
   if (isPending) {
