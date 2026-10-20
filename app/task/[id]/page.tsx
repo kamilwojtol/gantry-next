@@ -1,5 +1,7 @@
 "use client";
+
 import { use } from "react";
+import TaskDetails from "@/components/TaskDetails/TaskDetails";
 
 export default function TaskDetailsPage({
   params,
@@ -10,7 +12,8 @@ export default function TaskDetailsPage({
 
   return (
     <div>
-      <p>{id}</p>
+      <h1>Task Details</h1>
+      <TaskDetails id={id} />
     </div>
   );
 }
